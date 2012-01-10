@@ -1,4 +1,4 @@
-/*
+
 
 Implements SASL Authentication capability for charybdis family ircds
 
@@ -25,14 +25,42 @@ public:
   MODCONSTRUCTOR(CSASLMod) {}
 
   virtual bool OnLoad(const CString& sArgs, CString& sMessage) {
-    if (!sArgs.Token(0).empty()){
+    if (sArgs.Token(0).empty()){
+      m_sAccount=GetNV("SASL_Account");
+    } else {
       m_sAccount=sArgs.Token(0);
+      SetNV("SASL_Account", m_sAccount);
     }
-    if (!sArgs.Token(1).empty()){
+
+    if (sArgs.Token(1).empty()){
+      m_sPass=GetNV("SASL_Password");
+    } else {
       m_sPass=sArgs.Token(1);
+      SetNV("SASL_Password", m_sPass);
     }
+    SetArgs("");
     return true;
   }
+
+  virtual void OnModCommand(const CString& sCommand) 
+  { 
+    CString sCmdName = sCommand.Token(0).AsLower(); 
+    if (sCmdName == "set") { 
+      CString sAccount = sCommand.Token(1); 
+      CString sPass = sCommand.Token(2, true);  
+      m_sPass = sPass; 
+      m_sAccount = sAccount; 
+      SetNV("SASL_Password", m_sPass); 
+      SetNV("SASL_Account", m_sAccount); 
+      PutModule("Password set"); 
+    } else if (sCmdName == "clear") { 
+      m_sPass = ""; 
+      DelNV("SASL_Password"); 
+      DelNV("SASL_Account"); 
+    } else { 
+      PutModule("Commands: set <accountname> <password>, clear"); 
+    } 
+  } 
 
 
   virtual ~CSASLMod() {}
