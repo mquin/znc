@@ -1,4 +1,4 @@
-
+/*
 
 Implements SASL Authentication capability for charybdis family ircds
 
