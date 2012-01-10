@@ -73,7 +73,7 @@ public:
     CIRCSock *pIRCSock = GetUser()->GetIRCSock();
     if (!pIRCSock)
       return;
-    if (state == true && sCap == "sasl") {
+    if (state == true && sCap == "sasl"  && !m_sAccount.empty() && !m_sPass.empty() ) {
       pIRCSock->PauseCap();
       PutIRC("AUTHENTICATE PLAIN");
     }
