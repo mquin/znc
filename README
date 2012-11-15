@@ -1,1 +1,1 @@
-cap_sasl.cpp	Support SASL authentication when connecting to irc networks which support CAP SASL
+cap_sasl.cpp	Support SASL authentication when connecting to irc networks which support CAP SASL (Deprecated as of ZNC 1.0)
